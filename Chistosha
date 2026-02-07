@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Чистоша — теплая профессиональная химчистка</title>
+  <meta name="description" content="Чистоша — химчистка мебели, ковров и матрасов. Работаем: Свердловск, Краснодон, Ровеньки. Тел: +7-959-159-68-77.">
+  <style>
+    :root{
+      --bg1:#f9f6f0;
+      --bg2:#f2e9da;
+      --card:#ffffff;
+      --accent:#b78b5b;
+      --accent-2:#e9d7c0;
+      --text:#2b2b25;
+      --muted:#7a6f61;
+      --soft-shadow: 0 18px 50px rgba(43,38,33,.06);
+      --radius:20px;
+      --radius-sm:12px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue";
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:var(--text);
+      background: linear-gradient(160deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1120px; margin:0 auto; padding:28px}
+
+    /* Parallax background layers */
+    .page-bg{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(183,139,91,0.10), transparent 25%),
+        radial-gradient(700px 350px at 90% 80%, rgba(230,215,179,0.08), transparent 25%),
+        linear-gradient(180deg, rgba(249,246,240,1), rgba(242,233,218,1));
+      transform:translateZ(0);
+      transition:transform .2s linear;
+    }
+
+    /* Floating large logo (parallax layer) */
+    .logo-float{
+      position:fixed; right:6%; top:12%;
+      width:140px; height:140px; border-radius:20px;
+      background:linear-gradient(180deg,#fff,#fff7f0);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 30px 60px rgba(43,38,33,.09);
+      border:1px solid rgba(0,0,0,.04);
+      z-index:5;
+      transition:transform .12s linear;
+    }
+    .logo-float img{width:84%; height:84%; object-fit:contain}
+
+    header{display:flex; align-items:center; gap:18px; padding:18px 0; position:relative; z-index:10;}
+    .brand{display:flex; align-items:center; gap:14px}
+    .logo-wrap{
+      width:92px; height:92px; border-radius:16px; padding:12px;
+      background:linear-gradient(180deg,#fff,#fff7f0);
+      box-shadow:var(--soft-shadow); border:1px solid rgba(0,0,0,.04);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .logo-wrap img{width:100%; height:100%; object-fit:contain}
+    .brand-title{font-weight:900; font-size:20px; letter-spacing:-0.2px}
+    .brand-sub{color:var(--muted); font-size:13px; margin-top:4px}
+
+    nav{margin-left:auto; display:flex; gap:14px; align-items:center}
+    nav a{font-weight:700; color:var(--muted)}
+    .contact-btn{
+      display:inline-flex; align-items:center; gap:10px; padding:11px 16px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#2b220f; font-weight:900; border-radius:12px; box-shadow:var(--soft-shadow);
+      border:0; cursor:pointer;
+    }
+
+    main{padding:18px 0; position:relative; z-index:8}
+    .hero{display:grid; grid-template-columns:1.05fr .95fr; gap:22px; align-items:stretch}
+    .card{background:var(--card); border-radius: var(--radius); padding:22px; box-shadow:var(--soft-shadow); border:1px solid rgba(0,0,0,.03); opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.9,.2,1)}
+    .card.show{opacity:1; transform:none}
+
+    h1{margin:0; font-size:44px; line-height:1.03}
+    p.lead{color:var(--muted); margin:10px 0 0; font-size:16px}
+
+    .pill-row{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+    .pill{background:#fff; padding:8px 12px; border-radius:999px; border:1px solid rgba(0,0,0,.04); color:var(--muted); font-weight:700; font-size:13px}
+
+    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px}
+    .feature{background:linear-gradient(180deg,#fff,#fffaf3); padding:14px; border-radius:12px; border:1px solid rgba(0,0,0,.03)}
+    .feature b{display:block; margin-bottom:6px}
+
+    .prices{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px}
+    .price{padding:14px; border-radius:12px; background:#fff; border:1px solid rgba(0,0,0,.03)}
+    .price .sum{font-weight:900; font-size:20px; margin-top:6px}
+
+    .info{margin-top:14px; color:var(--muted); font-size:14px}
+
+    .contacts{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:8px; flex-wrap:wrap}
+    .contacts .left{display:flex; gap:12px; align-items:center}
+    .phone{font-weight:900; color:var(--text)}
+    .small{color:var(--muted); font-size:13px}
+
+    /* Footer intro animation */
+    .appear-delay-1{transition-delay:.08s}
+    .appear-delay-2{transition-delay:.16s}
+    .appear-delay-3{transition-delay:.24s}
+
+    /* Modal */
+    .overlay{position:fixed; inset:0; background:rgba(11,10,9,.48); display:none; align-items:center; justify-content:center; z-index:60; padding:18px}
+    .modal{width:100%; max-width:540px; background:#fff; border-radius:16px; padding:20px; box-shadow:0 30px 80px rgba(0,0,0,.32); transform:translateY(18px); opacity:0; transition:opacity .28s ease, transform .28s cubic-bezier(.2,.9,.2,1)}
+    .overlay.show .modal{transform:none; opacity:1}
+
+    .modal h3{margin:0 0 8px}
+    .modal p{margin:0 0 12px; color:var(--muted)}
+
+    .contact-links{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .link-card{display:flex; gap:12px; align-items:center; padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,.04); background:linear-gradient(180deg,#fff,#fffaf3)}
+    .link-card img{width:38px; height:38px; border-radius:8px; object-fit:cover}
+    .link-card .title{font-weight:800}
+    .link-card .sub{font-size:13px; color:var(--muted)}
+
+    .qr-row{display:flex; gap:12px; align-items:center; margin-top:14px; justify-content:center}
+    .qr{width:110px; height:110px; border-radius:12px; background:#f4f2ee; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,.03)}
+    .qr img{max-width:78%; max-height:78%}
+
+    footer{margin-top:28px; text-align:center; color:var(--muted); font-size:13px; opacity:0; transform:translateY(10px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.9,.2,1)}
+    footer.show{opacity:1; transform:none}
+
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .prices{grid-template-columns:1fr}
+      .contact-links{grid-template-columns:1fr}
+      .logo-float{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg" id="pageBg" aria-hidden="true"></div>
+
+  <div class="logo-float" id="logoFloat" aria-hidden="true">
+    <img src="logo.png" alt="Чистоша">
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo-wrap" aria-hidden="true">
+          <img src="logo.png" alt="Чистоша логотип">
+        </div>
+        <div>
+          <div class="brand-title">Чистоша</div>
+          <div class="brand-sub">Тёплая профессиональная химчистка — Свердловск • Краснодон • Ровеньки</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#services">Услуги</a>
+        <a href="#prices">Цены</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <button class="contact-btn" id="openOrder">
+        Заказать — +7‑959‑159‑68‑77
+      </button>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Первый экран">
+        <div class="card appear-delay-1" id="cardMain">
+          <h1>Возвращаем уют вашей мебели</h1>
+          <p class="lead">Деликатная и безопасная химчистка диванов, кресел, ковров и матрасов — свежесть, которой хочется делиться.</p>
+
+          <div class="pill-row" aria-hidden="true">
+            <div class="pill">Работаем: Свердловск, Краснодон, Ровеньки</div>
+            <div class="pill">Выезд в посёлки: +15%</div>
+            <div class="pill">Безопасно для любимых тканей</div>
+          </div>
+
+          <div class="features" role="list">
+            <div class="feature">
+              <b>Деликатная химчистка</b>
+              <div class="small">Подбор средств под материал — бережем цвет и текстуру.</div>
+            </div>
+            <div class="feature">
+              <b>Удаление запахов</b>
+              <div class="small">Не маскируем — устраняем причины запаха.</div>
+            </div>
+            <div class="feature">
+              <b>Быстрая сушка</b>
+              <div class="small">Профессиональная сушка — вещи готовы к использованию быстрее.</div>
+            </div>
+          </div>
+
+          <div class="info">Нужен расчёт? Нажмите «Заказать» — предложим удобный канал и подскажем цену по фото.</div>
+        </div>
+
+        <aside class="card appear-delay-2" id="cardSide">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px">
+            <div style="width:64px; height:64px; border-radius:12px; overflow:hidden; background:#fff; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,.03)">
+              <img src="logo.png" alt="Лого" style="width:64px; height:64px; object-fit:contain">
+            </div>
+            <div>
+              <div class="phone">+7‑959‑159‑68‑77</div>
+              <div class="small">Telegram: @HimchistkaLNR • WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="prices" aria-label="Цены">
+            <div class="price">
+              <div><b>Прямой диван</b></div>
+              <div class="sum">от 1 500 ₽</div>
+            </div>
+            <div class="price">
+              <div><b>Угловой диван</b></div>
+              <div class="sum">от 2 000 ₽</div>
+            </div>
+            <div class="price">
+              <div><b>Матрас</b></div>
+              <div class="sum">от 1 000 ₽</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="small">Выезд в посёлки — доплата +15%. Точная цена — по фото или замеру.</div>
+        </aside>
+      </section>
+
+      <section id="services" class="card appear-delay-3" style="margin-top:18px">
+        <h2>Что мы чистим</h2>
+        <div class="features" style="grid-template-columns:repeat(3,1fr); margin-top:12px">
+          <div class="feature"><b>Мягкая мебель</b><div class="small">Диваны, кресла, пуфы</div></div>
+          <div class="feature"><b>Ковры</b><div class="small">Шёрстяные, синтетические, паласы</div></div>
+          <div class="feature"><b>Матрасы</b><div class="small">Освежение, удаление пятен и запахов</div></div>
+        </div>
+      </section>
+
+      <section id="contacts" class="card" style="margin-top:18px">
+        <h2>Контакты</h2>
+        <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-top:12px">
+          <div>
+            <div class="phone">+7‑959‑159‑68‑77</div>
+            <div class="small" style="margin-top:6px">Telegram: <strong>@HimchistkaLNR</strong></div>
+            <div class="small" style="margin-top:6px">VK: <a href="https://vk.com/himcistkasvk" target="_blank" rel="noopener">vk.com/himcistkasvk</a></div>
+            <div class="small" style="margin-top:6px">OK: <a href="https://ok.ru/profile/586015013238" target="_blank" rel="noopener">ok.ru/profile/586015013238</a></div>
+          </div>
+
+          <div style="display:flex; gap:12px; align-items:center">
+            <div class="qr"><img src="qr_vk.png" alt="QR VK" style="width:78px; height:78px; object-fit:contain"></div>
+            <div class="qr"><img src="qr_ok.png" alt="QR OK" style="width:78px; height:78px; object-fit:contain"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container">
+      <div style="text-align:center; color:var(--muted); margin-top:18px" id="siteFooter">© <span id="y"></span> Чистоша — тёплая профессиональная химчистка</div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Как вам удобнее связаться?</h3>
+      <p>Выберите мессенджер или позвоните — ответим быстро и подскажем стоимость по фото.</p>
+
+      <div class="contact-links" aria-hidden="false">
+        <a class="link-card" href="https://t.me/HimchistkaLNR" target="_blank" rel="noopener">
+          <img src="telegram-icon.png" alt="tg">
+          <div>
+            <div class="title">Telegram</div>
+            <div class="sub">@HimchistkaLNR</div>
+          </div>
+        </a>
+
+        <a class="link-card" href="https://wa.me/79591596877" target="_blank" rel="noopener">
+          <img src="whatsapp-icon.png" alt="wa">
+          <div>
+            <div class="title">WhatsApp</div>
+            <div class="sub">+7‑959‑159‑68‑77</div>
+          </div>
+        </a>
+
+        <a class="link-card" href="https://vk.com/himcistkasvk" target="_blank" rel="noopener">
+          <img src="qr_vk.png" alt="vk">
+          <div>
+            <div class="title">ВКонтакте</div>
+            <div class="sub">vk.com/himcistkasvk</div>
+          </div>
+        </a>
+
+        <a class="link-card" href="https://ok.ru/profile/586015013238" target="_blank" rel="noopener">
+          <img src="qr_ok.png" alt="ok">
+          <div>
+            <div class="title">Одноклассники</div>
+            <div class="sub">ok.ru/profile/586015013238</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="qr-row" aria-hidden="true">
+        <div class="qr"><img src="qr_vk.png" alt="QR VK"></div>
+        <div class="qr"><img src="qr_ok.png" alt="QR OK"></div>
+      </div>
+
+      <div style="text-align:right; margin-top:12px">
+        <button class="contact-btn" id="closeModal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Плавное появление элементов при загрузке
+    window.addEventListener('load', () => {
+      document.getElementById('cardMain').classList.add('show');
+      document.getElementById('cardSide').classList.add('show');
+      document.querySelector('.card.appear-delay-3').classList.add('show');
+      document.querySelector('footer').classList.add('show');
+    });
+
+    // Modal open/close
+    const overlay = document.getElementById('overlay');
+    const openOrder = document.getElementById('openOrder');
+    const openOrderBtn = document.getElementById('openOrder');
+    const closeModal = document.getElementById('closeModal');
+
+    openOrderBtn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden','false');
+    });
+
+    closeModal.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      overlay.classList.remove('show');
+      overlay.setAttribute('aria-hidden','true');
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay){
+        overlay.style.display = 'none';
+        overlay.classList.remove('show');
+        overlay.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // Parallax effect on scroll (subtle)
+    const pageBg = document.getElementById('pageBg');
+    const logoFloat = document.getElementById('logoFloat');
+    window.addEventListener('scroll', () => {
+      const sc = window.scrollY;
+      // background moves slowly
+      pageBg.style.transform = `translateY(${sc * -0.06}px)`;
+      // floating logo moves a bit faster and slightly side-to-side
+      logoFloat.style.transform = `translateY(${sc * 0.12}px) translateX(${Math.sin(sc/150)*6}px)`;
+    });
+
+    // small helpers
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
